@@ -2,9 +2,15 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-rm -fr ./by-symbol
-mkdir ./by-symbol
+BY_SYMBOL=./by-symbol
 
-cp ./NYSE.csv ./by-symbol
+rm -fr ${BY_SYMBOL}
+mkdir ${BY_SYMBOL}
+cp ./NYSE.csv ${BY_SYMBOL}
 
-awk -f ./split-by-symbol.awk ./by-symbol/NYSE.csv
+ulimit -n 20000
+
+awk -F\, -f ../split-by-symbol.awk ${BY_SYMBOL}/NYSE.csv
+
+rm -fr ${BY_SYMBOL}/NYSE.csv
+rm -fr ${BY_SYMBOL}/Symbol.csv
