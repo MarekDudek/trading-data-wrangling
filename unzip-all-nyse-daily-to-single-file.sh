@@ -2,22 +2,28 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-rm -fr ./tmp
+
+WORK_AREA=./work-area
+TMP=${WORK_AREA}/tmp
+
+rm -fr ${WORK_AREA}
+
+mkdir -p ${WORK_AREA}
 
 for file in ./nyse-daily/*.zip
 do
-	unzip $file -d ./tmp
+	unzip $file -d ${TMP} 
 done
 
-rm -fr ./NYSE.csv
+ENTIRE_DATA=${WORK_AREA}/NYSE.csv
 
-echo Symbol,Date,Open,High,Low,Close,Volume > ./NYSE.csv
+echo Symbol,Date,Open,High,Low,Close,Volume > ${ENTIRE_DATA}
 
-for file in ./tmp/*.csv
+for file in ${TMP}/*.csv
 do
-	tail -n +2 $file >> ./NYSE.csv
+	tail -n +2 $file >> ${ENTIRE_DATA}
 done
 
-dos2unix ./NYSE.csv
+dos2unix ${ENTIRE_DATA}
 
-rm -fr ./tmp
+rm -fr ${TMP}
