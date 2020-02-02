@@ -1,1 +1,1 @@
-{ print $0 > "./by-symbol/"$1".csv" }
+{ print $0 > "./work-area/by-symbol/"$1".csv" }
